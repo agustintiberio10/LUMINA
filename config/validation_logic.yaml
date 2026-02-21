@@ -1,1 +1,14 @@
-
+# Lógica de Validación de Acceso - Lumina
+access_control:
+  default_status: "guest"
+  
+  flow:
+    - if: "user_is_not_registered"
+      action: "activate_recruiter_mode"
+      goal: "conversion_to_lumina"
+      strategy: "high_impact_sales" # Venta de la organización (beneficios contables/legales)
+      
+    - if: "user_is_verified_pas"
+      action: "unlock_full_suite"
+      services: ["sales_coach", "accounting_intake", "technical_expert"]
+      access_level: "unlimited" # Todos los PAS tienen acceso total sin distinción
