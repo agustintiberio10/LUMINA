@@ -1,1 +1,25 @@
-
+# Mapa de Conexión del Sistema (El Enrutador)
+orchestrator_routing:
+  - role: "GUEST"
+    prompt: "/prompts/recruiter-closer.txt"
+    context: "/docs/adquisicion-pas/"
+    
+  - role: "PAS_LUMINA"
+    global_context: 
+      - "/docs/companias/"           # El glosario de aseguradoras (mañas, mercado, liquidaciones)
+      - "/docs/glosario-seguros.md"  # El diccionario técnico (Prima, Premio, RC, Reticencia, etc.)
+    modules:
+      sales: 
+        triggers: ["vender", "cliente", "cotizar", "objeción", "cierre", "competencia"]
+        prompt: "/prompts/sales-coach-unlimited.txt"
+        docs: "/docs/sales-coach/"
+        
+      technical:
+        triggers: ["siniestro", "choque", "plazo", "ley", "rechazo", "cobertura", "denuncia"]
+        prompt: "/prompts/experto-tecnico-seguros.txt"
+        docs: "/docs/operaciones-tecnicas/"
+        
+      accounting:
+        triggers: ["monotributo", "factura", "afip", "iibb", "liquidación", "impuestos"]
+        prompt: "/prompts/accounting-collector.txt"
+        docs: "/docs/contabilidad-demand/"
