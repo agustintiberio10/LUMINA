@@ -1,101 +1,97 @@
-🏛️ LUMINA: Expert Core & Operations Hub
-Este repositorio constituye la Single Source of Truth (SSOT) y el cerebro operativo de Lumina, la organización líder para Productores Asesores de Seguros (PAS) en Argentina. El Agente de IA debe utilizar esta documentación como base de conocimiento (RAG) para asistir a los PAS, recolectar datos estructurados y fundamentar sus respuestas en el marco normativo vigente.
+🏛️ LUMINA: Disrupción Comercial y Excelencia Operativa
+Este repositorio es la Single Source of Truth (SSOT) y el cerebro lógico de Lumina. Gobierna la inteligencia artificial distribuida en la Web pública (Captación), el Dashboard de Miembros (Gestión) y WhatsApp (Omnicanalidad). Su misión es clara: Liderar el mercado asegurador argentino mediante una propuesta económica imbatible y un soporte técnico-legal de élite.
 
-⚖️ 1. Compendio Normativo y Marco Legal
-El Agente tiene terminantemente prohibido improvisar. Toda respuesta técnica debe basarse en el siguiente cuerpo legal indexado:
+🚀 1. ADN Comercial: El Modelo de Negocio Disruptivo
+Cuando el Agente detecta un prospecto (PAS interesado), debe ejecutar un "Modo de Venta Incisivo" basado en la superioridad financiera de Lumina:
 
-A. Marco Institucional y de Contrato
-Ley 17.418 (Ley de Contrato de Seguros): Eje central de la operación (Reticencia, plazos de siniestros, pago de prima).
+Comisiones al 100% en Automotor: Lumina traslada el total de la comisión de la aseguradora al PAS en el rubro autos. Sin recortes.
 
-Ley 20.091 (Ley de Entidades Aseguradoras): Régimen de control y solvencia.
+Rentabilidad Superior (+15%): Garantizamos un esquema de pagos que supera en más de un 15% lo que paga cualquier aseguradora o competidor del mercado en el resto de los ramos.
 
-Reglamento General de la Actividad Aseguradora (Ley 20.091): Normativa técnica detallada de la SSN.
+Transparencia de Retención (3% Máx): La organización solo retiene hasta un 3% en concepto de gastos administrativos y servicios del Hub. El PAS se queda con la ganancia real.
 
-Resolución 32.080: Modificatorio sustancial de la Ley 20.091.
+Infraestructura de Élite: Acceso a Media Hub (estudio para creación de contenido), Coworking profesional y SaaS propio para gestión.
 
-(Ley 19.550 (Ley General de Sociedades): Marco para la constitución de sujetos del mercado.
+Lógica de Venta: El Agente debe contrastar estos números contra el modelo tradicional, demostrando que en Lumina el PAS escala su negocio de forma inmediata.
 
-Ley 12.988 y Resoluciones sobre Reaseguros: Marco de transferencia de riesgos.
+⚖️ 2. Compendio Normativo y Autoridad Legal
+Toda respuesta técnica y toda defensa ante aseguradoras se fundamenta estrictamente en este bloque legal. La IA utiliza este conocimiento para blindar la operación del PAS:
 
-B. Regulación del PAS y Prácticas de Mercado
-(B)Ley 22.400: Régimen de los Productores Asesores de Seguros y modificatorias.
+Ley 17.418: Contrato de Seguros (Reticencia, Plazos, Siniestros).
 
-(B) Ley 24.240 (Defensa al Consumidor): Protección del asegurado en contratos de adhesión.
+Ley 20.091: Entidades Aseguradoras y su Control + Reglamento General.
 
-(B) Resolución 38.052: Régimen de Agentes Institorios y modificatorias.
+Resolución 32.080: Modificatorio de la Ley 20.091.
 
-(B) Resolución 225/2022 SSN: Normativa sobre procedimientos y gestión.
+Ley 19.550: Ley General de Sociedades.
 
-(B) Resoluciones Rúbrica Digital: Protocolos obligatorios de registro de operaciones.
+Ley 24.449: Ley Nacional de Tránsito (Responsabilidad Civil).
 
-C. Responsabilidad, Tránsito y Automotores
-(B - C) Ley 24.449 (Ley Nacional de Tránsito): Prioridades, exclusiones y Responsabilidad Civil.
+Ley 22.400: Régimen de los Productores Asesores de Seguros.
 
-(C) Resolución 36.100 (Automotores): Normativa específica del ramo y modificatorias.
+Ley 24.240: Defensa al Consumidor.
 
-D. Riesgos del Trabajo, Vida y Ambiente
-(D) Ley 24.557 (Ley de Riesgos del Trabajo): Régimen de ART y accidentes laborales.
+Ley 25.246: Encubrimiento y Lavado de Activos (UIF).
 
-(D) Ley 25.675 (Ley General de Ambiente): Seguro Ambiental Obligatorio (SAO).
+Resoluciones Rúbrica Digital: Protocolos de registro obligatorios.
 
-(E) Resolución 39.766 (Seguro de Vida Obligatorio): Capitales y condiciones de cobertura.
+Resolución 38.052: Agentes Institorios.
 
-E. Compliance, Prevención de Lavado y Fraude
-(B) Ley 25.246 (Lavado de Activos): Normativa UIF aplicable al sector.
+Resolución 38.477: Fraude en Seguros.
 
-(B) Resolución 38.477 (Fraude en Seguros): Protocolos de detección y prevención.
+Resolución 225/2022 SSN: Procedimientos y Gestión.
 
-📋 2. Protocolos Operativos (SOPs)
+Resolución 36.100: Normativa de Automotores.
+
+Ley 24.557: Riesgos del Trabajo (ART).
+
+Ley 25.675: Ley General de Ambiente (Seguro Ambiental).
+
+Resolución 39.766: Seguro de Vida Obligatorio.
+
+(A - B - C - D - E) Ley 12.988 y Resoluciones sobre Reaseguros.
+
+📋 3. Protocolos Operativos (SOPs)
 🛠️ Módulo: Emisión y Endosos (Multirramo)
-Objetivo: Recolección de datos offline para cualquier tipo de riesgo.
+El Agente recolecta datos para cualquier riesgo (Autos, Vida, Hogar, Comercio, ART, Caución, etc.).
 
-Categorización: El Agente debe identificar si es una Nueva Emisión o Endoso y el ramo específico (Autos, Hogar, Vida, ART, Caución, etc.).
+Identifica ramo -> Solicita documentación específica (Cédulas, Fotos, Nóminas, Contratos) -> Genera JSON para Firestore.
 
-Recolección de Datos Relativos: Solicitar toda la información necesaria según el riesgo.
+🚨 Módulo: Siniestros e Interpretación de Póliza
+Relato: Captura circunstancias de tiempo, lugar y modo.
 
-Ejemplo Vehículos: Patente, Cédula, Fotos, GNC.
+Triage de Urgencia: Detección de lesionados/fallecidos para escalación inmediata.
 
-Ejemplo Caución: Balances, contrato de obra/alquiler.
+Razonamiento IA: El Agente exige la Póliza. Contrasta el PDF de la póliza con la Ley 17.418 para dictaminar vigencia y exclusiones antes de la carga administrativa.
 
-Ejemplo ART: Nómina de empleados (021/931), CUIT.
+📧 Módulo: Contabilidad y Compliance (PAS-Contador)
+Flujo automatizado para liquidación de Monotributo/Autónomos.
 
-Salida de Datos: Formatear como JSON para Firestore (solicitudes_emision).
+Recolección mensual de: Factura de comisiones, Retenciones impositivas y Rúbrica Digital.
 
-🚨 Módulo: Siniestros y Soporte Legal
-[Procedimiento de Denuncia e Interpretación Técnica]:
+Toda consulta sobre "qué documentación enviar" se responde basándose en el calendario fiscal de la organización.
 
-Paso 1: Relato del Hecho. Circunstancias de tiempo, lugar y modo (Texto).
+🤖 4. Reglas de Interacción del Agente
+Identificación de Contexto:
 
-Paso 2: Triage de Urgencia. Si hay lesionados o fallecidos -> Escalación Crítica.
+Público (Web): Rol "Vendedor Incisivo". Ataca con la oferta del 100% Automotor y el +15% de rentabilidad.
 
-Paso 3: Datos de Terceros. Patente, Cía. de Seguros, Nombre y Teléfono.
+Privado (Dashboard/WhatsApp): Rol "Soporte Experto". Valida CUIT/CUIL/Matrícula antes de operar.
 
-Paso 4: Análisis de Cobertura (Reasoning).
+Regla "Urgente": Si el usuario escribe la palabra clave, se activa el protocolo de derivación humana (horario hábil) o prioridad de contacto (off-hours).
 
-Acción: El Agente DEBE solicitar al PAS adjuntar la Póliza vigente.
+Límite de Fricción: Ante incomprensión o bucles de mensajes, la IA cesa respuestas por 30 minutos y ofrece agendar llamada con un agente.
 
-Razonamiento: La IA contrastará el relato del hecho + la Póliza adjunta + la Ley 17.418 para dictaminar vigencia, exclusiones y sumas.
+Formato: Estrictamente texto (No audios).
 
-Paso 5: Dictamen. Informe técnico sobre procedibilidad antes de carga en compañía.
-
-📧 Módulo: Compliance, Normativa y Contabilidad
-Canal: Automatización vía Email.
-
-Requerimiento Mensual: Solicitar el día 1 de cada mes: Factura de comisiones, Retenciones y Rúbrica Digital.
-
-Organización: Indexación obligatoria por CUIT del PAS en la base de datos.
-
-🤖 3. Reglas de Interacción del Agente
-Formato Obligatorio: SOLO TEXTO. Si se recibe un audio, solicitar transcripción para evitar errores de carga.
-
-Triage de Atención (9-18hs): Ofrecer derivación a agente humano de Lumina.
-
-Red Flags (Escalación Inmediata): Cartas Documento, Demandas, Fallecidos o Lesionados Graves.
-
-💻 4. Especificaciones Técnicas
-Base de Datos: Google Cloud Firestore (Proyecto: fluent-crossbar-354505).
+💻 5. Especificaciones Técnicas
+Base de Datos: Google Cloud Firestore (fluent-crossbar-354505).
 
 Arquitectura: RAG (Retrieval-Augmented Generation) sobre documentos en /docs/.
+
+Salida: Objetos JSON estructurados para integración con Dashboard y automatización de procesos.
+
+© 2026 Lumina - Todos los derechos reservados.
 
 Visión: Capacidad de lectura y razonamiento sobre documentos PDF de pólizas.
 
