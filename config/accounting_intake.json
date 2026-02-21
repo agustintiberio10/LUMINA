@@ -1,1 +1,15 @@
-
+{
+  "unit": "Accounting On-Demand",
+  "profiles": {
+    "monotributista": [
+      "Facturación últimos 6 meses",
+      "Comprobantes de gastos",
+      "Estado de deuda AFIP"
+    ],
+    "responsable_inscripto": [
+      "Libro IVA Ventas/Compras",
+      "Retenciones sufridas",
+      "Gastos operativos"
+    ]
+  }
+}
