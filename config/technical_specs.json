@@ -1,1 +1,75 @@
-
+{
+  "calculator_settings": {
+    "timezone": "America/Argentina/Buenos_Aires",
+    "default_calendar": "corridos"
+  },
+  "legal_deadlines": {
+    "denuncia_siniestro": {
+      "value": 3,
+      "unit": "dias",
+      "type": "corridos",
+      "trigger_event": "conocimiento_del_hecho",
+      "law_article": "17.418 - Art. 46"
+    },
+    "pedido_informacion_complementaria": {
+      "value": 15,
+      "unit": "dias",
+      "type": "corridos",
+      "trigger_event": "recepcion_denuncia_cia",
+      "law_article": "17.418 - Art. 46"
+    },
+    "aceptacion_rechazo": {
+      "value": 30,
+      "unit": "dias",
+      "type": "corridos",
+      "trigger_event": "recepcion_denuncia_o_info_completa",
+      "law_article": "17.418 - Art. 56",
+      "notes": "Vencido el plazo, el silencio importa aceptación."
+    },
+    "prescripcion_acciones": {
+      "value": 1,
+      "unit": "anos",
+      "type": "corridos",
+      "trigger_event": "obligacion_exigible",
+      "law_article": "17.418 - Art. 58"
+    }
+  },
+  "legal_framework": {
+    "fundamentales_y_contrato": [
+      "Ley 17.418 (Ley de Contrato de Seguros): El eje central de la operación. Regulación de reticencia, plazos de siniestros, pago de prima y derechos/obligaciones de las partes.",
+      "Ley 20.091 (Ley de Entidades Aseguradoras): Marco de control de la actividad.",
+      "Reglamento General de la Actividad Aseguradora (Ley 20.091): Normativa técnica detallada de la SSN.",
+      "Resolución 32.080: Modificatorio sustancial de la Ley 20.091.",
+      "Ley 19.550 (Ley General de Sociedades): Marco para la constitución y operación de los sujetos del mercado."
+    ],
+    "regulacion_pas_y_mercado": [
+      "Ley 22.400: Régimen de los Productores Asesores de Seguros y sus resoluciones modificatorias.",
+      "Resolución 38.052: Régimen de Agentes Institorios y modificatorias.",
+      "Resolución 225/2022 SSN: Normativa vigente sobre procedimientos y gestión.",
+      "Resoluciones de Rúbrica Digital: Protocolos obligatorios de registro de operaciones para el PAS."
+    ],
+    "responsabilidad_transito_y_consumo": [
+      "Ley 24.449 (Ley Nacional de Tránsito): Prioridades, exclusiones y marco de Responsabilidad Civil.",
+      "Ley 24.240 (Defensa al Consumidor): Aplicación en contratos de adhesión y protección del asegurado.",
+      "Resolución 36.100: Normativa específica sobre el ramo Automotores y sus modificatorias."
+    ],
+    "riesgos_especificos_y_medio_ambiente": [
+      "Ley 24.557 (Ley de Riesgos del Trabajo): Régimen de ART y enfermedades profesionales.",
+      "Ley 25.675 (Ley General del Ambiente): Seguro Ambiental Obligatorio (SAO) y remediación.",
+      "Resolución 39.766: Seguro de Vida Obligatorio.",
+      "Ley 12.988 y Resoluciones sobre Reaseguros: Marco de transferencia de riesgos."
+    ],
+    "compliance_y_prevencion": [
+      "Ley 25.246 (Encubrimiento y Lavado de Activos): Normativa UIF aplicable al sector seguros.",
+      "Resolución 38.477 (Fraude en Seguros): Protocolos de detección y prevención de conductas fraudulentas."
+    ]
+  },
+  "legal_scenarios": {
+    "omision_o_falsedad_del_cliente": "Activar análisis de Reticencia según Ley 17.418",
+    "demora_injustificada_de_la_cia": "Invocar plazos de Ley 17.418 y sumar Ley 24.240 (Defensa al Consumidor / Trato Digno)",
+    "discusion_de_culpa_en_choque": "Cruzar relato con prioridades de paso y exclusiones de Ley 24.449",
+    "sospecha_de_auto_robo_o_fraude": "Activar alertas internas de Resolución 38.477",
+    "operacion_inusual_o_gran_volumen": "Exigir documentación respaldatoria según Ley 25.246 (UIF)",
+    "falla_en_registro_de_operaciones": "Emitir alerta de riesgo de compliance sobre Ley 22.400 y Rúbrica Digital SSN"
+  }
+}
