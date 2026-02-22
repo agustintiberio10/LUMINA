@@ -19,7 +19,9 @@ En el mercado tradicional, las organizaciones compiten por los mismos clientes o
 * **Media Hub (Estudio de Grabación):** Uso exclusivo de nuestro estudio equipado para grabar tus podcasts, videos para redes sociales y construir tu marca personal como PAS referente.
 * **Capacitación y Comunidad:** Acceso VIP a charlas presenciales, clínicas de ventas y eventos cerrados con las principales aseguradoras.
 
-## 4. Pack "Growth & Back-Office On-Demand" (Inversión: $50 USD / mes)
+## 4. Pack "Growth & Back-Office On-Demand" (Inversión: $50 USD / mes cada servicio)
+
+***Hay dos unidades, la contable integral y la unidad de performance de marketing, cada una sale 50 dolares, si preguntan por ambas seria 100 dolares o si preguntan por cada una seria 50 dolares por cada una
 ***Beneficio exclusivo y habilitado únicamente para miembros activos de la Membresía Lumina Hub.*** Diseñado para el PAS que quiere delegar la carga administrativa aburrida y escalar su captación de clientes en piloto automático:
 * **Unidad Contable Integral:** Nos encargamos de tu desorden fiscal. Recopilamos, pre-armamos y gestionamos tus recategorizaciones de Monotributo, liquidaciones de IVA y exigencias de AFIP/SSN. Tu cabeza tiene que estar en vender, no en los impuestos.
 * **Unidad de Performance Marketing (Google & Meta Ads):** Dejá de depender exclusivamente del "boca a boca". Nuestro equipo interno diseña, configura y optimiza tus campañas de pauta digital en Google Ads, Instagram y Facebook. Vos definís tu presupuesto publicitario y nosotros nos encargamos de la estrategia para inyectar *leads* (prospectos calificados) directo a tu WhatsApp.
