@@ -208,13 +208,16 @@ def format_news_tweet(article: dict) -> str:
     """
     Formatea un articulo como tweet.
     Formato: titulo + link. Las URLs en X ocupan 23 chars fijos (t.co).
+    Reserva espacio para los hashtags que agrega publish_tweet().
     """
     title = article["title"]
     url = article["url"]
 
     url_length = 23
     separator = "\n\n"
-    max_title_length = 280 - url_length - len(separator)
+    # Reservar 35 chars para hashtags ("\n\n#seguros #productordeseguros #pas")
+    hashtags_reserve = 35
+    max_title_length = 280 - url_length - len(separator) - hashtags_reserve
 
     if len(title) > max_title_length:
         title = title[:max_title_length - 3] + "..."
