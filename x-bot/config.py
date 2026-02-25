@@ -24,7 +24,7 @@ X_ACCESS_TOKEN = _require_env("X_ACCESS_TOKEN")
 X_ACCESS_TOKEN_SECRET = _require_env("X_ACCESS_TOKEN_SECRET")
 
 # Configuracion del bot
-TWEET_INTERVAL_HOURS = int(os.getenv("TWEET_INTERVAL_HOURS", "4"))
+TWEET_INTERVAL_MINUTES = int(os.getenv("TWEET_INTERVAL_MINUTES", "20"))
 PUBLISH_HOUR_START = int(os.getenv("PUBLISH_HOUR_START", "9"))
 PUBLISH_HOUR_END = int(os.getenv("PUBLISH_HOUR_END", "22"))
 TIMEZONE = os.getenv("TIMEZONE", "America/Argentina/Buenos_Aires")

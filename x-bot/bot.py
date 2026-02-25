@@ -179,7 +179,7 @@ def main():
     )
     parser.add_argument(
         "--category",
-        choices=["valor", "confianza", "hub", "servicios", "educativos", "mindset"],
+        choices=["valor", "confianza", "hub", "servicios", "educativos", "crecimiento"],
         default=None,
         help="Categoria del tweet (opcional)",
     )

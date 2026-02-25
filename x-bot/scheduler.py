@@ -32,7 +32,7 @@ def scheduled_post():
 
 def start_scheduler():
     """Inicia el scheduler que publica tweets a intervalos regulares."""
-    interval = config.TWEET_INTERVAL_HOURS
+    interval = config.TWEET_INTERVAL_MINUTES
     mode = "DRY RUN" if config.DRY_RUN else "PRODUCCION"
     now = _get_now()
 
@@ -40,7 +40,7 @@ def start_scheduler():
     print("LUMINA X Bot - Scheduler")
     print("=" * 50)
     print(f"Modo: {mode}")
-    print(f"Intervalo: cada {interval} horas")
+    print(f"Intervalo: cada {interval} minutos")
     print(f"Horario de publicacion: {config.PUBLISH_HOUR_START}:00 - {config.PUBLISH_HOUR_END}:00")
     print(f"Zona horaria: {config.TIMEZONE}")
     print(f"Hora actual: {now.strftime('%Y-%m-%d %H:%M:%S %Z')}")
@@ -48,7 +48,7 @@ def start_scheduler():
     print("Presiona Ctrl+C para detener.\n")
 
     # Programar la tarea
-    schedule.every(interval).hours.do(scheduled_post)
+    schedule.every(interval).minutes.do(scheduled_post)
 
     # Publicar inmediatamente al iniciar
     print("Publicando primer tweet al iniciar...")
