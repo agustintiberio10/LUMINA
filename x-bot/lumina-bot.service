@@ -1,0 +1,25 @@
+[Unit]
+Description=LUMINA X Bot - Publicacion automatica de tweets
+After=network.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=lumina
+WorkingDirectory=/opt/lumina-bot
+ExecStart=/opt/lumina-bot/venv/bin/python scheduler.py
+Restart=always
+RestartSec=30
+StandardOutput=journal
+StandardError=journal
+
+# Variables de entorno desde archivo
+EnvironmentFile=/opt/lumina-bot/.env
+
+# Seguridad
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/opt/lumina-bot
+
+[Install]
+WantedBy=multi-user.target
