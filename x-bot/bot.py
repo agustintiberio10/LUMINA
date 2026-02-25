@@ -19,6 +19,9 @@ import config
 from content import ALL_TWEETS, ALL_CATEGORIES
 from news_scraper import get_news_tweet
 
+# Hashtags que se agregan a todos los tweets
+HASHTAGS = "\n\n#seguros #productordeseguros #pas"
+
 # Archivo para rastrear tweets ya publicados y evitar repeticiones
 HISTORY_FILE = Path(__file__).parent / "tweet_history.json"
 
@@ -96,6 +99,8 @@ def publish_tweet(text: str) -> dict | None:
     """
     Publica un tweet en X.
 
+    Agrega hashtags automaticamente si caben en el limite de 280 chars.
+
     Args:
         text: Contenido del tweet (max 280 caracteres).
 
@@ -105,7 +110,10 @@ def publish_tweet(text: str) -> dict | None:
     tz = pytz.timezone(config.TIMEZONE)
     timestamp = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S %Z")
 
-    if len(text) > 280:
+    # Agregar hashtags si caben
+    if len(text) + len(HASHTAGS) <= 280:
+        text = text + HASHTAGS
+    elif len(text) > 280:
         print(f"ADVERTENCIA: Tweet excede 280 caracteres ({len(text)}). Truncando.")
         text = text[:277] + "..."
 

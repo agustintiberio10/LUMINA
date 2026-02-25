@@ -152,3 +152,4 @@ x-bot/news_history.json
 x-bot/news_daily_cache.json
 x-bot/post_counter.json
 x-bot/last_mention_id.json
+x-bot/invited_users.json
