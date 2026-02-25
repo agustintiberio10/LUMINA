@@ -2,7 +2,8 @@
 Scraper de noticias de 100seguro.com.ar para el bot de X de LUMINA.
 
 Obtiene las noticias mas recientes del mercado asegurador argentino
-y genera tweets informativos con el link a la nota original.
+una vez por dia (a las 11:00 AM) y las cachea localmente.
+Durante el dia el bot publica las noticias relevantes sin repetir.
 """
 
 import json
@@ -17,29 +18,50 @@ import pytz
 import config
 
 NEWS_URL = "https://100seguro.com.ar/"
+DAILY_CACHE_FILE = Path(__file__).parent / "news_daily_cache.json"
 NEWS_HISTORY_FILE = Path(__file__).parent / "news_history.json"
 
-# Categorias relevantes para el publico PAS de LUMINA
+# Keywords para filtrar noticias relevantes para PAS
 RELEVANT_KEYWORDS = [
-    "productor", "pas ", "corredor", "broker", "comision",
-    "ssn", "superintendencia", "regulacion", "resolucion",
-    "art ", "riesgo", "siniestro", "poliza",
-    "aseguradora", "seguro", "prima", "cobertura",
-    "ley", "legislacion", "reforma", "norma",
-    "mercado", "industria", "innovacion", "tecnologia",
-    "auto", "automotor", "vehiculo",
-    "vida", "patrimonial", "hogar",
-    "fraude", "prevencion", "capacitacion",
+    # Regulacion y normativa
+    "ssn", "superintendencia", "regulacion", "resolucion", "norma",
+    "ley", "legislacion", "reforma", "decreto",
+    # Actores del mercado
+    "productor", "pas", "corredor", "broker", "organizador",
+    "aseguradora", "compania de seguros", "reaseguradora",
+    # Productos y operaciones
+    "poliza", "cobertura", "prima", "comision", "siniestro",
+    "art", "riesgo", "automotor", "auto", "vehiculo",
+    "vida", "patrimonial", "hogar", "caucion",
+    # Industria
+    "mercado asegurador", "mercado de seguros", "industria",
+    "innovacion", "tecnologia", "digital", "insurtech",
+    # Temas de interes
+    "fraude", "prevencion", "capacitacion", "formacion",
+    "robo", "accidente", "seguridad vial",
+    "credito", "hipotecario", "inmobiliario",
 ]
 
 
-def fetch_news() -> list[dict]:
-    """
-    Obtiene las noticias mas recientes de 100seguro.com.ar.
+def _get_now() -> datetime:
+    """Hora actual en zona horaria configurada."""
+    tz = pytz.timezone(config.TIMEZONE)
+    return datetime.now(tz)
 
-    Returns:
-        Lista de diccionarios con titulo, url y resumen de cada noticia.
-    """
+
+def _url_hash(url: str) -> str:
+    """Genera un hash corto de la URL para tracking."""
+    return hashlib.md5(url.encode()).hexdigest()[:12]
+
+
+def _is_relevant(article: dict) -> bool:
+    """Determina si una noticia es relevante para el publico PAS de LUMINA."""
+    text = (article["title"] + " " + article.get("excerpt", "")).lower()
+    return any(kw in text for kw in RELEVANT_KEYWORDS)
+
+
+def fetch_news_from_web() -> list[dict]:
+    """Obtiene las noticias mas recientes de 100seguro.com.ar."""
     try:
         response = requests.get(NEWS_URL, timeout=15, headers={
             "User-Agent": "LUMINA-Bot/1.0 (Insurance News Aggregator)"
@@ -52,7 +74,6 @@ def fetch_news() -> list[dict]:
     soup = BeautifulSoup(response.text, "html.parser")
     articles = []
 
-    # Buscar articulos en la pagina principal
     for article in soup.find_all("article"):
         title_tag = article.find(["h2", "h3"])
         if not title_tag:
@@ -65,11 +86,9 @@ def fetch_news() -> list[dict]:
         title = title_tag.get_text(strip=True)
         url = link_tag["href"]
 
-        # Asegurar URL completa
         if url.startswith("/"):
             url = f"https://100seguro.com.ar{url}"
 
-        # Buscar resumen/extracto
         excerpt = ""
         excerpt_tag = article.find(class_=lambda c: c and ("excerpt" in c or "summary" in c or "description" in c))
         if excerpt_tag:
@@ -89,6 +108,85 @@ def fetch_news() -> list[dict]:
     return articles
 
 
+# --- Cache diario ---
+
+def load_daily_cache() -> dict:
+    """Carga el cache diario de noticias."""
+    if DAILY_CACHE_FILE.exists():
+        with open(DAILY_CACHE_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return {"date": "", "articles": []}
+
+
+def save_daily_cache(data: dict) -> None:
+    """Guarda el cache diario de noticias."""
+    with open(DAILY_CACHE_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+
+def refresh_daily_cache() -> list[dict]:
+    """
+    Scrapea 100seguro.com.ar, filtra noticias relevantes y las cachea.
+    Se ejecuta una vez al dia a las 11:00 AM.
+
+    Returns:
+        Lista de articulos relevantes del dia.
+    """
+    now = _get_now()
+    today = now.strftime("%Y-%m-%d")
+
+    print(f"[{now.strftime('%H:%M:%S')}] Scrapeando 100seguro.com.ar...")
+    all_articles = fetch_news_from_web()
+
+    if not all_articles:
+        print("No se pudieron obtener noticias.")
+        return []
+
+    # Filtrar solo las relevantes
+    relevant = [a for a in all_articles if _is_relevant(a)]
+
+    print(f"  Total encontradas: {len(all_articles)}")
+    print(f"  Relevantes para PAS: {len(relevant)}")
+
+    # Guardar en cache
+    cache = {
+        "date": today,
+        "articles": relevant,
+    }
+    save_daily_cache(cache)
+
+    return relevant
+
+
+def should_refresh_cache() -> bool:
+    """Determina si hay que refrescar el cache (una vez al dia a las 11am)."""
+    now = _get_now()
+    today = now.strftime("%Y-%m-%d")
+    cache = load_daily_cache()
+
+    # Si el cache es de otro dia, hay que refrescar
+    if cache["date"] != today:
+        return True
+
+    return False
+
+
+def get_todays_articles() -> list[dict]:
+    """
+    Obtiene los articulos del dia desde el cache.
+    Si no hay cache de hoy, lo refresca.
+    """
+    cache = load_daily_cache()
+    today = _get_now().strftime("%Y-%m-%d")
+
+    if cache["date"] != today:
+        return refresh_daily_cache()
+
+    return cache["articles"]
+
+
+# --- Historial de noticias tweeteadas ---
+
 def load_news_history() -> list[str]:
     """Carga el historial de noticias ya tweeteadas (por hash de URL)."""
     if NEWS_HISTORY_FILE.exists():
@@ -99,30 +197,22 @@ def load_news_history() -> list[str]:
 
 def save_news_history(history: list[str]) -> None:
     """Guarda el historial de noticias tweeteadas."""
-    # Mantener solo las ultimas 200 para no crecer indefinidamente
-    history = history[-200:]
+    history = history[-500:]
     with open(NEWS_HISTORY_FILE, "w", encoding="utf-8") as f:
         json.dump(history, f, ensure_ascii=False, indent=2)
 
 
-def _url_hash(url: str) -> str:
-    """Genera un hash corto de la URL para tracking."""
-    return hashlib.md5(url.encode()).hexdigest()[:12]
-
+# --- Formateo y seleccion ---
 
 def format_news_tweet(article: dict) -> str:
     """
     Formatea un articulo como tweet.
-
-    El formato es: titulo + link. Se respeta el limite de 280 caracteres.
-    Las URLs de t.co en X ocupan 23 caracteres fijos.
+    Formato: titulo + link. Las URLs en X ocupan 23 chars fijos (t.co).
     """
     title = article["title"]
     url = article["url"]
 
-    # En X, cualquier URL ocupa 23 caracteres (t.co shortener)
     url_length = 23
-    # Separador entre titulo y URL
     separator = "\n\n"
     max_title_length = 280 - url_length - len(separator)
 
@@ -134,47 +224,48 @@ def format_news_tweet(article: dict) -> str:
 
 def get_news_tweet() -> str | None:
     """
-    Obtiene una noticia nueva y la formatea como tweet.
+    Obtiene una noticia relevante del cache diario que no haya sido tweeteada.
 
     Returns:
         Texto del tweet o None si no hay noticias nuevas.
     """
-    articles = fetch_news()
+    articles = get_todays_articles()
     if not articles:
-        print("No se pudieron obtener noticias de 100seguro.com.ar")
+        print("No hay noticias en el cache de hoy.")
         return None
 
     history = load_news_history()
 
-    # Buscar la primera noticia que no hayamos tweeteado
     for article in articles:
         article_hash = _url_hash(article["url"])
         if article_hash not in history:
             tweet = format_news_tweet(article)
-            # Registrar como tweeteada
             history.append(article_hash)
             save_news_history(history)
+            print(f"  Noticia seleccionada: {article['title'][:60]}...")
             return tweet
 
-    print("Todas las noticias actuales ya fueron tweeteadas.")
+    print("Todas las noticias relevantes de hoy ya fueron tweeteadas.")
     return None
 
 
 # --- CLI para testing ---
 
 if __name__ == "__main__":
-    print("Obteniendo noticias de 100seguro.com.ar...\n")
-    articles = fetch_news()
+    print("=== Test del scraper de noticias ===\n")
 
-    if not articles:
-        print("No se encontraron articulos.")
-    else:
-        print(f"Se encontraron {len(articles)} articulos:\n")
-        for i, article in enumerate(articles, 1):
-            tweet = format_news_tweet(article)
-            print(f"--- Articulo {i} ---")
-            print(f"Titulo: {article['title']}")
-            print(f"URL: {article['url']}")
-            print(f"Tweet ({len(tweet)} chars):")
-            print(tweet)
-            print()
+    print("1. Scrapeando 100seguro.com.ar...")
+    all_articles = fetch_news_from_web()
+    print(f"   Total: {len(all_articles)} articulos\n")
+
+    relevant = [a for a in all_articles if _is_relevant(a)]
+    print(f"2. Filtro de relevancia: {len(relevant)} de {len(all_articles)} son relevantes\n")
+
+    print("3. Noticias relevantes del dia:\n")
+    for i, article in enumerate(relevant, 1):
+        tweet = format_news_tweet(article)
+        print(f"--- [{i}] ---")
+        print(f"Titulo: {article['title']}")
+        print(f"URL: {article['url']}")
+        print(f"Tweet ({len(tweet)} chars)")
+        print()

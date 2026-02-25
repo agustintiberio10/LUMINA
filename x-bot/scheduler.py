@@ -2,6 +2,8 @@
 Scheduler para publicacion automatica de tweets.
 
 Ejecuta el bot a intervalos regulares dentro del horario configurado.
+Scrapea noticias de 100seguro.com.ar una vez al dia a las 11:00 AM.
+
 Uso: python scheduler.py
 """
 
@@ -15,6 +17,7 @@ import schedule
 
 import config
 from bot import post_next
+from news_scraper import refresh_daily_cache, should_refresh_cache
 
 
 def _get_now():
@@ -30,6 +33,14 @@ def scheduled_post():
     post_next()
 
 
+def scheduled_news_refresh():
+    """Tarea diaria: scrapea noticias de 100seguro.com.ar a las 11:00 AM."""
+    now = _get_now()
+    print(f"\n[{now.strftime('%Y-%m-%d %H:%M:%S %Z')}] Refrescando noticias del dia...")
+    articles = refresh_daily_cache()
+    print(f"  Cache actualizado: {len(articles)} noticias relevantes listas para publicar.")
+
+
 def start_scheduler():
     """Inicia el scheduler que publica tweets a intervalos regulares."""
     interval = config.TWEET_INTERVAL_MINUTES
@@ -40,18 +51,29 @@ def start_scheduler():
     print("LUMINA X Bot - Scheduler")
     print("=" * 50)
     print(f"Modo: {mode}")
-    print(f"Intervalo: cada {interval} minutos")
+    print(f"Intervalo tweets: cada {interval} minutos")
+    print(f"Scraping noticias: diario a las 11:00 AM")
     print(f"Horario de publicacion: {config.PUBLISH_HOUR_START}:00 - {config.PUBLISH_HOUR_END}:00")
     print(f"Zona horaria: {config.TIMEZONE}")
     print(f"Hora actual: {now.strftime('%Y-%m-%d %H:%M:%S %Z')}")
     print("=" * 50)
     print("Presiona Ctrl+C para detener.\n")
 
-    # Programar la tarea
+    # Programar tweets cada N minutos
     schedule.every(interval).minutes.do(scheduled_post)
 
-    # Publicar inmediatamente al iniciar
-    print("Publicando primer tweet al iniciar...")
+    # Programar scraping de noticias a las 11:00 AM todos los dias
+    schedule.every().day.at("11:00").do(scheduled_news_refresh)
+
+    # Al iniciar: cargar noticias si no hay cache de hoy
+    if should_refresh_cache():
+        print("No hay cache de noticias de hoy. Scrapeando ahora...")
+        scheduled_news_refresh()
+    else:
+        print("Cache de noticias de hoy ya existe.")
+
+    # Publicar primer tweet al iniciar
+    print("\nPublicando primer tweet al iniciar...")
     post_next()
 
     # Manejar SIGINT/SIGTERM para salida limpia
