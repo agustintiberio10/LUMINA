@@ -29,3 +29,7 @@ PUBLISH_HOUR_START = int(os.getenv("PUBLISH_HOUR_START", "9"))
 PUBLISH_HOUR_END = int(os.getenv("PUBLISH_HOUR_END", "22"))
 TIMEZONE = os.getenv("TIMEZONE", "America/Argentina/Buenos_Aires")
 DRY_RUN = os.getenv("DRY_RUN", "false").lower() == "true"
+
+# Configuracion de menciones
+MENTIONS_CHECK_MINUTES = int(os.getenv("MENTIONS_CHECK_MINUTES", "5"))
+MENTIONS_MAX_RESULTS = int(os.getenv("MENTIONS_MAX_RESULTS", "10"))
