@@ -17,9 +17,16 @@ import pytz
 
 import config
 from content import ALL_TWEETS, ALL_CATEGORIES
+from news_scraper import get_news_tweet
 
 # Archivo para rastrear tweets ya publicados y evitar repeticiones
 HISTORY_FILE = Path(__file__).parent / "tweet_history.json"
+
+# Contador para alternar entre contenido propio y noticias
+POST_COUNTER_FILE = Path(__file__).parent / "post_counter.json"
+
+# Cada cuantos tweets publicar una noticia (1 de cada N)
+NEWS_EVERY_N_POSTS = 3
 
 
 def create_client() -> tweepy.Client:
@@ -149,8 +156,27 @@ def publish_tweet(text: str) -> dict | None:
         return None
 
 
+def _load_counter() -> int:
+    """Carga el contador de posts."""
+    if POST_COUNTER_FILE.exists():
+        with open(POST_COUNTER_FILE, "r") as f:
+            return json.load(f).get("count", 0)
+    return 0
+
+
+def _save_counter(count: int) -> None:
+    """Guarda el contador de posts."""
+    with open(POST_COUNTER_FILE, "w") as f:
+        json.dump({"count": count}, f)
+
+
 def post_next(category: str | None = None) -> None:
-    """Selecciona y publica el siguiente tweet."""
+    """
+    Selecciona y publica el siguiente tweet.
+
+    Alterna entre contenido propio de LUMINA y noticias de 100seguro.com.ar.
+    Por defecto: 1 de cada 3 tweets es una noticia del sector.
+    """
     if not is_within_publish_hours() and not config.DRY_RUN:
         tz = pytz.timezone(config.TIMEZONE)
         now = datetime.now(tz)
@@ -159,6 +185,19 @@ def post_next(category: str | None = None) -> None:
             f"Rango permitido: {config.PUBLISH_HOUR_START}h - {config.PUBLISH_HOUR_END}h"
         )
         return
+
+    counter = _load_counter()
+    counter += 1
+    _save_counter(counter)
+
+    # Cada N posts, intentar publicar una noticia
+    if counter % NEWS_EVERY_N_POSTS == 0 and category is None:
+        print("[Turno de noticia del sector]")
+        news_tweet = get_news_tweet()
+        if news_tweet:
+            publish_tweet(news_tweet)
+            return
+        print("No hay noticias nuevas disponibles. Publicando contenido propio.")
 
     tweet = pick_tweet(category)
     if tweet:
