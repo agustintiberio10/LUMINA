@@ -87,7 +87,7 @@ def start_scheduler():
     logger.info("=" * 50)
     logger.info(f"Modo: {mode}")
     logger.info(f"Intervalo tweets: cada {interval} minutos")
-    logger.info(f"Monitoreo menciones: cada {mentions_interval} minutos")
+    logger.info(f"Monitoreo menciones: {'cada ' + str(mentions_interval) + ' minutos' if config.ENABLE_MENTIONS else 'DESACTIVADO'}")
     logger.info(f"Scraping noticias: diario a las 11:00 AM")
     logger.info(f"Horario: {config.PUBLISH_HOUR_START}:00 - {config.PUBLISH_HOUR_END}:00")
     logger.info(f"Zona horaria: {config.TIMEZONE}")
@@ -101,8 +101,9 @@ def start_scheduler():
     # 2. Programar scraping de noticias a las 11:00 AM
     schedule.every().day.at("11:00").do(scheduled_news_refresh)
 
-    # 3. Programar chequeo de menciones cada M minutos
-    schedule.every(mentions_interval).minutes.do(scheduled_mentions_check)
+    # 3. Programar chequeo de menciones cada M minutos (si esta habilitado)
+    if config.ENABLE_MENTIONS:
+        schedule.every(mentions_interval).minutes.do(scheduled_mentions_check)
 
     # Al iniciar: cargar noticias si no hay cache de hoy
     if should_refresh_cache():
@@ -115,9 +116,12 @@ def start_scheduler():
     logger.info("Publicando primer tweet al iniciar...")
     post_next()
 
-    # Primer chequeo de menciones al iniciar
-    logger.info("Chequeando menciones pendientes...")
-    scheduled_mentions_check()
+    # Primer chequeo de menciones al iniciar (si esta habilitado)
+    if config.ENABLE_MENTIONS:
+        logger.info("Chequeando menciones pendientes...")
+        scheduled_mentions_check()
+    else:
+        logger.info("Monitoreo de menciones desactivado (ENABLE_MENTIONS=false).")
 
     # Manejar SIGINT/SIGTERM para salida limpia
     def handle_signal(signum, frame):
